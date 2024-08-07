@@ -87,4 +87,28 @@ export default class ExpenseController {
     return res.status(500).send("Something went wrong");
   }
 }
+
+updateTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { oldTag, newTag } = req.body;
+    await this.expenseRepository.updateTagInExpense(id, oldTag, newTag);
+    res.status(200).send("Tag updated successfully.");
+  } catch (error) {
+    res.status(500).send("Error updating tag.");
+  }
+};
+
+// Delete a tag from an expense
+deleteTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tag } = req.query;
+    console.log(id, tag);
+    await this.expenseRepository.deleteTagFromExpense(id, tag);
+    res.status(200).send("Tag deleted successfully.");
+  } catch (error) {
+    res.status(500).send("Error deleting tag.");
+  }
+};
 }
