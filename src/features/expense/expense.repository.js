@@ -49,6 +49,36 @@ class ExpenseRepository {
     const collection = db.collection(this.collectionName);
     return await collection.find(criteria).toArray();
   }
+
+
+  // Update a tag in an expense
+  async updateTagInExpense(id, oldTag, newTag) {
+    const db = getDB();
+    const expenses = db.collection(this.collectionName);
+  
+    // Pull the old tag
+    await expenses.updateOne(
+      { _id: new ObjectId(id) },
+      { $pull: { tags: oldTag } }
+    );
+  
+    // Push the new tag
+    const result = await expenses.updateOne(
+      { _id: new ObjectId(id) },
+      { $push: { tags: newTag } }
+    );
+  return result;
+    
+    
+  }
+
+  // Delete a tag from an expense
+  async deleteTagFromExpense(id, tag) {
+    const db = getDB();
+    const expenses = db.collection(this.collectionName);
+    return await expenses.updateOne({_id:new ObjectId(id) }, {$pull:{tags:tag}});
+    
+  }
 }
 
 export default ExpenseRepository;

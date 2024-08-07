@@ -30,4 +30,15 @@ router.post("/:id/tags", (req, res) => {
   expenseController.addTag(req, res);
 });
 
+
+// Route to update a tag within a specific expense
+router.put("/update/tag/:id", (req, res) => {
+  expenseController.updateTag(req, res);
+});
+
+// Route to delete a tag from a specific expense
+router.delete("/delete/tags/:id", (req, res) => {
+  expenseController.deleteTag(req, res);
+});
+
 export default router;
