@@ -79,6 +79,65 @@ class ExpenseRepository {
     return await expenses.updateOne({_id:new ObjectId(id) }, {$pull:{tags:tag}});
     
   }
+
+  
+  // Aggregate total revenue for each product
+  async aggregateTotalRevenue() {
+    try{
+    const db = getDB();
+   return db.collection(this.collectionName).aggregate([
+      {
+        $group:{
+          _id:"$title",
+          totalRevenue:{$sum:"$amount"}
+        }
+      }
+    ]).toArray();
+  }catch(err){
+    console.log(err);
+    throw new ApplicationError("Something went wrong with database", 500);    
+  }
+  }
+
+  // Group expenses by tags
+  async groupExpensesByTags() {
+    try{
+      const db = getDB();
+      return db.collection(this.collectionName).aggregate([
+        { $unwind: "$tags" },  // Unwind the tags array
+      {
+        $group: {
+          _id: "$tags",  // Group by each tag
+          totalAmount: { $sum: "$amount" },  // Sum the amount of expenses for each tag
+          expenses: { $push: "$$ROOT" }  // Push the entire document into an array for reference
+        }
+      }
+
+      ]).toArray();
+
+    }catch(err){
+      console.log(err);
+      throw new ApplicationError("Something went wrong with database", 500);    
+    }
+  }
+
+  // Group and calculate average by recurring status
+  async groupAndCalculateAvgByRecurring() {
+    try{
+      const db = getDB();
+     return db.collection(this.collectionName).aggregate([
+        {
+          $group:{
+            _id:"$isRecurring",
+           avgAmount:{$avg:"$amount"}
+          }
+        }
+      ]).toArray();
+    }catch(err){
+      console.log(err);
+      throw new ApplicationError("Something went wrong with database", 500);    
+    }
+  }
 }
 
 export default ExpenseRepository;

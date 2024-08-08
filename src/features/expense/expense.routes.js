@@ -41,4 +41,22 @@ router.delete("/delete/tags/:id", (req, res) => {
   expenseController.deleteTag(req, res);
 });
 
+
+// Route to aggregate total revenue for each product
+router.get("/aggregate/total-revenue", (req, res) => {
+  expenseController.aggregateTotalRevenue(req, res);
+});
+
+// Route to group expenses by tags
+router.get("/group/by-tags", (req, res) => {
+  expenseController.groupExpensesByTags(req, res);
+});
+
+// Route to group and calculate average by recurring status
+router.get("/group/avg-by-recurring", (req, res) => {
+  expenseController.groupAndCalculateAvgByRecurring(req, res);
+});
+
+
+
 export default router;

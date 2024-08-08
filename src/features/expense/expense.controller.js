@@ -111,4 +111,37 @@ deleteTag = async (req, res) => {
     res.status(500).send("Error deleting tag.");
   }
 };
+
+
+    // Aggregate total revenue for each product
+    aggregateTotalRevenue = async (req, res) => {
+      try {
+        const result = await this.expenseRepository.aggregateTotalRevenue();
+        res.status(200).send(result);
+      } catch (error) {
+        res.status(500).send("Error aggregating total revenue.");
+      }
+    };
+  
+    // Group expenses by tags
+    groupExpensesByTags = async (req, res) => {
+      try {
+        const result = await this.expenseRepository.groupExpensesByTags();
+        res.status(200).send(result);
+      } catch (error) {
+        res.status(500).send("Error grouping expenses by tags.");
+      }
+    };
+  
+    // Group and calculate average by recurring status
+    groupAndCalculateAvgByRecurring = async (req, res) => {
+      try {
+        const result = await this.expenseRepository.groupAndCalculateAvgByRecurring();
+        res.status(200).send(result);
+      } catch (error) {
+        res.status(500).send("Error grouping and calculating average by recurring status.");
+      }
+    };
+  
+
 }
